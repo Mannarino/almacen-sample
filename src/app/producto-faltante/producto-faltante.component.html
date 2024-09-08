@@ -1,0 +1,37 @@
+<button  class="btn btn-primary back" routerLink="../home">volver a home </button>
+<!-- As a link -->
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">vas a agregar un producto faltante</a>
+  </div>
+</nav>
+<div  class="alert alert-success ocultar "  *ngIf="sucess" role="alert">
+   el producto se agrego exitosamente
+ </div>
+<form [formGroup]="form" (ngSubmit)="agregarFaltante($event);">
+    <div class="mb-3">
+       <label for="nombre" class="form-label">ingrese nombre de producto</label>
+       <input type="text" class="form-control" id="nombre" placeholder="nombre"
+       formControlName="nombre" name="nombre" 
+       >
+     
+   </div>  
+ 
+     <button type="submit" class="btn btn-primary" >agregar</button>
+ </form>
+
+ <table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>accion</th>
+        </tr>
+    </thead>
+    <tbody>
+	    <tr *ngFor="let producto of lista ">
+            <td>{{ producto.nombre }}</td>
+           
+            <td><button type="button" class="btn btn-danger" (click)="eliminar(producto._id)">eliminar</button></td>
+        </tr>
+    </tbody>
+</table>   

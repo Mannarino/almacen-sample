@@ -1,0 +1,44 @@
+<app-header *ngIf="logueado"></app-header>
+<div class="botonera">
+   <button *ngIf="logueado" type="button" routerLink="../agregar-producto" class="btn btn-primary">agregar producto</button>
+   <button *ngIf="logueado" type="button" routerLink="../productos-faltantes" class="btn btn-primary">faltantes</button>
+</div>
+<input type="text"
+        class="form-control mb-4 mt-4"
+        placeholder="Buscar "
+        #txtSearch
+        (keyup)="onSearchProducto( txtSearch.value )" />
+
+<h3 *ngIf="cargandoWarning">Cargando datos, por favor espere...</h3>
+<img src="assets/cargando.gif" *ngIf="cargandoWarning">
+
+<button type="button" class="btn btn-primary position-relative">
+    cantidad productos
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{cantidadProductos}}
+      <span class="visually-hidden">unread messages</span>
+    </span>
+  </button>
+<table class="table"  *ngIf="cargado">
+    <thead>
+        <tr> 
+            <th>Nombre</th>
+            <th *ngIf="logueado" >precio de costo</th>
+            <th *ngIf="logueado">porcentaje ganancia</th>
+            <th>precio final</th>
+            <th *ngIf="logueado">editar</th>
+            <th *ngIf="logueado">eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let producto of lista | buscador:search">
+            <td>{{ producto.nombre }}</td>
+            <td *ngIf="logueado">{{ producto.precioCosto }}</td>
+            <td *ngIf="logueado">{{ producto.porcentajeGanancia }}</td>
+            <td>{{ producto.precioFinal }}</td>
+            <td *ngIf="logueado"><button type="button" routerLink="../editar-producto/{{producto._id}}" class="btn btn-primary">edit</button></td>
+            <td *ngIf="logueado"><button type="button" class="btn btn-danger" (click)="eliminar(producto._id)">eliminar</button></td>
+        </tr>
+    </tbody>
+</table>   
+

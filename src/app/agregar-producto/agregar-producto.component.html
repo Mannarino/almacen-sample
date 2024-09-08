@@ -1,0 +1,35 @@
+
+<button  class="btn btn-primary back" routerLink="../home">volver a home </button>
+
+<form [formGroup]="form" (ngSubmit)="addProduct($event);">
+    <div class="mb-3">
+       <label for="nombre" class="form-label">ingrese nombre de producto</label>
+       <input type="text" class="form-control" id="nombre" placeholder="nombre"
+       formControlName="nombre" name="nombre"
+       >
+     
+   </div>  
+   <div class="mb-3">
+    <label for="costo" class="form-label">ingrese precio de costo</label>
+    <input type="text" class="form-control" id="costo" placeholder="precio costo"
+    formControlName="precioCosto" name="costo"
+    >
+   
+</div> 
+<div class="mb-3">
+    <label for="porcentaje" class="form-label">ingrese porcentaje ganancia</label>
+    <input type="text" class="form-control" id="porcentaje" placeholder="porcentaje"
+    formControlName="porcentajeGanancia" name="porcentaje"
+    >
+   
+</div> 
+<div class="mb-3">
+    <label for="precioFinal" class="form-label"><strong>el precio final es:</strong></label>
+    <input type="text" class="form-control" id="precioFinal" placeholder="precio final"
+    formControlName="precioFinal" name="precioFinal" readonly
+    >
+   
+</div>   
+     <button type="submit" class="btn btn-primary" >agregar</button>
+ </form>
+ 
