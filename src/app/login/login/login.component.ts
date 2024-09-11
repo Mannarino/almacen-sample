@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertifyMessagesService } from 'src/app/core/alertify-messages.service';
-import { HttpRequestService } from '../http-request.service';
-import { MemoryService } from '../../core/memory.service';
+import { LocalStorageService } from 'src/app/core/local-storage.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,57 +20,69 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
     remember: new FormControl(false)
   });
-  constructor(private httpRequestService:HttpRequestService,
+  constructor(private authService:AuthService,
               private router: Router,
-              private memoryService:MemoryService,
+              private localStorageService:LocalStorageService,
               private notificationAlertifyMessages:AlertifyMessagesService) {
                
                }
   ngOnInit(): void {
-      if( localStorage.getItem('remember')){
-           this.form.setValue({
-                user:localStorage.getItem('user') ,
-                password:localStorage.getItem('password') ,
-                remember: true
-           });
-      }
+      // Si existe la clave 'remember' en localStorage, rellenamos los campos
+    if (localStorage.getItem('remember')) {
+      this.form.setValue({
+        user: this.localStorageService.getUser() || '',
+        password: this.localStorageService.getPassword() || '',
+        remember: true
+      });
+    }
+
+    // Escuchar los cambios en el control 'remember'
+    this.form.get('remember')?.valueChanges.subscribe((remember: boolean) => {
+      const user = this.form.get('user')?.value || '';
+      const password = this.form.get('password')?.value || '';
+
+      // Utiliza tu servicio para gestionar el localStorage
+      this.localStorageService.rememberUserAndPassword(remember, user, password);
+    });
   } 
   get email() { return this.form.get('user'); }
   get password() { return this.form.get('password'); }
-            
-            
- 
-            
+                     
   toggleShowPassword(): void {
     this.showPassword = !this.showPassword;
   }
-  access(): void {
-    this.procesandoImg = true
-    const remember = this.form.get('remember')?.value 
-    const user = this.form.get('user')?.value
-    const password = this.form.get('password')?.value
-    
-   this.memoryService.rememberUserAndPassword(remember,user,password)
 
-   this.httpRequestService.loginUser(this.form.value)
-           .subscribe(
-              
-               data => {
-              this.procesandoImg = false
-               this.memoryService.saveUserAndPassword(user,password)
-               console.log(data)
-               this.router.navigate(['/home']); 
-            
-               },
-               error => {
-                this.procesandoImg = false
-                this.notificationAlertifyMessages.invalidUser()
-                this.memoryService.cleanLocalstorage()
-              
-               }) 
-  }           
+  access(): void {
+    this.procesandoImg = true;
+  
+    const remember = this.form.get('remember')?.value;
+    const user = this.form.get('user')?.value;
+    const password = this.form.get('password')?.value;
+  
+    this.authService.loginUser(user, password).subscribe(
+      data => {
+        this.procesandoImg = false;
+        
+        // Verifica si el usuario quiere recordar las credenciales y guarda o limpia el localStorage
+        if (remember) {
+          this.localStorageService.saveUserAndPassword(user, password);
+          localStorage.setItem('remember', 'true');
+        } else {
+          this.localStorageService.cleanLocalstorage();
+        }
+  
+        // Redirige al usuario al home
+        this.router.navigate(['/home']);
+      },
+      error => {
+        this.procesandoImg = false;
+        this.notificationAlertifyMessages.invalidUser();
+        console.log(error);
+      }
+    );
+  }
   accessLikeEmpoyer(){
-    this.memoryService.cleanLocalstorage()
+    this.localStorageService.cleanLocalstorage()
     this.router.navigate(['/home']); 
   }             
 

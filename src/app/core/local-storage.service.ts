@@ -3,16 +3,27 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class MemoryService {
+export class LocalStorageService {
 
   constructor() { }
+
   rememberUserAndPassword(remember:boolean | null,user:string, password:string){
     if (remember) {
        this.saveUserAndPassword(user,password)
+       localStorage.setItem('remember', 'true');
     } else {
        this.cleanLocalstorage()
     }
   }
+  
+  getUser(): string | null {
+    return localStorage.getItem('user');
+  }
+
+  getPassword(): string | null {
+    return localStorage.getItem('password');
+  }
+
   saveUserAndPassword(user:string, password:string){
     localStorage.setItem('user',user);
     localStorage.setItem('password',password);
@@ -20,17 +31,6 @@ export class MemoryService {
   cleanLocalstorage(){
     localStorage.removeItem('user');
     localStorage.removeItem('password');
-  }
-  
-  checkLogin(){
-    const user=localStorage.getItem('user');
-    const password=localStorage.getItem('password');
-    if(user&&password){
-      return true
-    }
-    else{
-      return false
-    }
-
+    localStorage.removeItem('remember');
   }
 }

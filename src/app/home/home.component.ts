@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductosService } from '../core/productos.service';
 import { StateManagetService } from '../core/state-managet.service';
 import { Producto } from '../interfaces/producto';
-import { MemoryService } from '../core/memory.service';
+import { AuthService } from '../login/auth.service';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,7 +21,7 @@ export class HomeComponent implements OnInit {
   cantidadProductos = 0
   constructor(private productosService:ProductosService,
               private managetStateService:StateManagetService,
-              private memoryService:MemoryService) { }
+              private authService:AuthService) { }
 
   ngOnInit(): void {
     this.managetStateService.lista$.subscribe(lista => {
@@ -31,7 +33,7 @@ export class HomeComponent implements OnInit {
       }
       
     });
-    this.logueado=this.memoryService.checkLogin()
+    this.logueado=this.authService.isAuthenticated()
   }
   
   onSearchProducto( search: string ) {

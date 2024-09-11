@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MemoryService } from 'src/app/core/memory.service';
+import { AuthService } from 'src/app/login/auth.service';
+
 
 @Component({
   selector: 'app-header',
@@ -9,13 +10,16 @@ import { MemoryService } from 'src/app/core/memory.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private router: Router,
-    private memoryService:MemoryService) { }
+  constructor(private router: Router, private authService:AuthService) { }
 
   ngOnInit(): void {
   }
-  makeLogout(){
+  makeLogout() {
+    // Llamamos al servicio de autenticación para borrar el token
+    this.authService.removeToken()
+    
+    // Redirigimos al usuario a la página de login
     this.router.navigate(['/login']);
-    this.memoryService.cleanLocalstorage()
   }
+  
 }

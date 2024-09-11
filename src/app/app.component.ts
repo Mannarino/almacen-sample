@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductosService } from './core/productos.service';
-import { MemoryService } from './core/memory.service';
+
 
 @Component({
   selector: 'app-root',
