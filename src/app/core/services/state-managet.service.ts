@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AlertifyMessagesService } from './alertify-messages.service';
-import { Producto } from './interfaces/producto';
+import { Producto } from '../interfaces/producto';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,15 +14,17 @@ export class StateManagetService {
   constructor(private http: HttpClient,
     private alertifyMesaggesService:AlertifyMessagesService) { }
     
-  getAllProducts(){
-    this.http.get('/assets/products.json')
-    .subscribe( (value:Producto[]) =>{
-      this.listaSubject.next(value);
-    },
-    error => {
-        this.alertifyMesaggesService.errorServer()
-    }) 
-  }
+    getAllProducts() {
+      this.http.get<Producto[]>('/assets/products.json')
+        .subscribe((value: Producto[]) => {
+          const listaInvertida = [...value].reverse();
+          this.listaSubject.next(listaInvertida);
+        },
+        error => {
+          this.alertifyMesaggesService.errorServer();
+        });
+    }
+    
   getProductById(id: string): Observable<Producto | undefined> {
     return this.http.get<Producto[]>('/assets/products.json').pipe(
       map((productos: Producto[]) => productos.find(producto => producto._id === id)),
@@ -38,9 +40,9 @@ export class StateManagetService {
   }
 
   addElement(elemento: Producto): void {
-    this.alertifyMesaggesService.addItemMessage()
+    this.alertifyMesaggesService.addItemMessage();
     const listaActual = this.listaSubject.getValue();
-    const nuevaLista = [...listaActual, elemento];
+    const nuevaLista = [elemento, ...listaActual]; // Agregar el nuevo elemento al principio
     this.listaSubject.next(nuevaLista);
   }
 

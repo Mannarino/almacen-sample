@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateManagetService } from './core/state-managet.service';
+import { StateManagetService } from './core/services/state-managet.service';
 
 
 

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl , FormGroup } from '@angular/forms'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Producto} from '../core/interfaces/producto'
-import { StateManagetService } from '../core/state-managet.service';
-import { CalculationsService } from '../services/calculations.service';
-import { WatchAndSetService } from '../services/watch-and-set.service';
+import { StateManagetService } from '../core/services/state-managet.service';
+import { WatchAndSetService } from '../core/services/watch-and-set.service';
 
 @Component({
   selector: 'app-editar-producto',

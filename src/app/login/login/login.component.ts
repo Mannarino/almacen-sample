@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertifyMessagesService } from 'src/app/core/alertify-messages.service';
-import { LocalStorageService } from 'src/app/core/local-storage.service';
+import { AlertifyMessagesService } from 'src/app/core/services/alertify-messages.service';
+import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { AuthService } from '../auth.service';
 
 @Component({

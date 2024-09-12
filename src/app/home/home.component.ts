@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StateManagetService } from '../core/state-managet.service';
+import { StateManagetService } from '../core/services/state-managet.service';
 import { Producto } from '../core/interfaces/producto';
 import { AuthService } from '../login/auth.service';
 
