@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl , FormGroup } from '@angular/forms'
 import { AlertifyMessagesService } from '../core/alertify-messages.service';
-import { ProductosService } from '../core/productos.service';
+import { StateManagetService } from '../core/state-managet.service';
+
+
 import { CalculationsService } from '../services/calculations.service';
 import { WatchAndSetService } from '../services/watch-and-set.service';
 
@@ -23,7 +25,7 @@ export class AgregarProductoComponent implements OnInit {
   		precioFinal : new FormControl(''),
     })	
   }
-  constructor(private productosService:ProductosService,
+  constructor(private managetStateSevice:StateManagetService,
               private watchAndSetService:WatchAndSetService,
               private alertifyMesaggesService:AlertifyMessagesService) { 
   		this.buildForm();
@@ -36,15 +38,8 @@ export class AgregarProductoComponent implements OnInit {
   addProduct(event: Event) {
     event.preventDefault();
     const value = this.form.value;
-    this.productosService.addProduct(value)
-    .subscribe(
-      producto =>{ 
-        this.limpiarFormulario()
-        this.alertifyMesaggesService.addItemMessage()
-      },
-      error => {
-          this.alertifyMesaggesService.errorServer()
-      })
+    this.managetStateSevice.addElement(value)
+    this.limpiarFormulario()
   }
 
   limpiarFormulario(){

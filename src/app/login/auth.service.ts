@@ -22,7 +22,8 @@ export class AuthService {
           this.setToken(user.token);  // Guardar el token al iniciar sesión
           return { token: user.token };
         } else {
-          return throwError('Usuario o contraseña incorrectos');
+          // Asegúrate de lanzar el error correctamente
+        throw new Error('Usuario o contraseña incorrectos');
         }
       }),
       catchError(error => {

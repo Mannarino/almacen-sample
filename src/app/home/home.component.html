@@ -1,25 +1,24 @@
-<app-header *ngIf="logueado"></app-header>
-<div class="botonera">
-   <button *ngIf="logueado" type="button" routerLink="../agregar-producto" class="btn btn-primary">agregar producto</button>
-   <button *ngIf="logueado" type="button" routerLink="../productos-faltantes" class="btn btn-primary">faltantes</button>
-</div>
-<input type="text"
-        class="form-control mb-4 mt-4"
-        placeholder="Buscar "
-        #txtSearch
-        (keyup)="onSearchProducto( txtSearch.value )" />
+<!-- Muestra el componente <app-header> solo si el usuario está logueado -->
+    <app-header *ngIf="logueado"></app-header>
 
-<h3 *ngIf="cargandoWarning">Cargando datos, por favor espere...</h3>
-<img src="assets/cargando.gif" *ngIf="cargandoWarning">
+<!-- Muestra un componente para acciones de productos, también solo si el usuario está logueado -->
+<app-product-actions *ngIf="logueado"></app-product-actions>
+    
+<!-- Componente de barra de búsqueda. Cuando el usuario escribe en el campo de búsqueda, 
+se emite el evento 'searchProducto' y se captura el valor en la función 'onSearchProducto' del componente padre -->
+<app-search-bar (searchProducto)="onSearchProducto($event)"></app-search-bar>
 
-<button type="button" class="btn btn-primary position-relative">
-    cantidad productos
-    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-      {{cantidadProductos}}
-      <span class="visually-hidden">unread messages</span>
-    </span>
-  </button>
-<table class="table"  *ngIf="cargado">
+
+<!-- Muestra un componente de imagen de carga si la variable 'cargandoWarning' es verdadera -->
+<app-loading-image *ngIf="showingLoading"></app-loading-image>
+
+
+<!-- Componente que muestra el botón con el conteo de productos, 
+el valor de 'cantidadProductos' se pasa desde el componente padre -->
+<app-product-count-button [cantidadProductos]="numeroProductos"></app-product-count-button>
+
+<!-- Muestra una tabla solo si la variable 'cargado' es verdadera (indica que los datos ya están cargados) -->
+<table class="table"  *ngIf="dataLoaded">
     <thead>
         <tr> 
             <th>Nombre</th>

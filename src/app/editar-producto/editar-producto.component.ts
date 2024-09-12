@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl , FormGroup } from '@angular/forms'
-import { ProductosService } from '../core/productos.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import {Producto} from './../interfaces/producto'
+import {Producto} from '../core/interfaces/producto'
+import { StateManagetService } from '../core/state-managet.service';
 import { CalculationsService } from '../services/calculations.service';
 import { WatchAndSetService } from '../services/watch-and-set.service';
 
@@ -26,9 +26,8 @@ export class EditarProductoComponent implements OnInit {
     })	
   
 }
-  constructor( private productosService:ProductosService,
-  	           private route: ActivatedRoute,
-  	           private router: Router,
+  constructor(private managetStateSevice:StateManagetService,
+  	          private route: ActivatedRoute,
               private watchAndSetService:WatchAndSetService
   	         ) 
              { this.buildForm()}
@@ -38,7 +37,7 @@ export class EditarProductoComponent implements OnInit {
   
   	this.route.params.subscribe(params => {
         this.parametro = params['id'];
-        this.productosService.getOneProduct<Producto>(this.parametro)
+        this.managetStateSevice.getProductById(this.parametro)
           .subscribe((value:Producto )=> {
               this.form.get("_id").setValue(value._id)
               this.form.get("nombre").setValue(value.nombre)
@@ -52,7 +51,7 @@ export class EditarProductoComponent implements OnInit {
   actualizar(event: Event) {
     event.preventDefault();
     const value = this.form.value;
-    this.productosService.updateProduct(value,this.form.get("_id").value)
+    this.managetStateSevice.editElement(this.form.get("_id").value,value)
   }
 	
 }

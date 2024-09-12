@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { ProductosService } from './core/productos.service';
+import { StateManagetService } from './core/state-managet.service';
+
+
 
 
 @Component({
@@ -10,11 +12,10 @@ import { ProductosService } from './core/productos.service';
 export class AppComponent {
   title = 'frontend';
   
-  constructor(private productosService:ProductosService
-              ) { }
+  constructor(private managetStateService:StateManagetService)
+               { }
   ngOnInit(): void {
-    //obtengo todos los productos de la api rest 
-    this.productosService.getAllProducts()
+    this.managetStateService.getAllProducts()
     
   }
   

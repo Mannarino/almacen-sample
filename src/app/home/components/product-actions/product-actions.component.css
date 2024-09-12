@@ -1,0 +1,8 @@
+:host{
+    display: block;
+}
+.botonera{
+	display: flex;
+	justify-content: space-around;
+	margin-top: 32px;
+}

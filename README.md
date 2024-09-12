@@ -2,26 +2,36 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Funcionalidades Implementadas
 
-## Code scaffolding
+## 1. **Autenticación de Usuario**
+La aplicación permite verificar si un usuario está autenticado o no. La autenticación se gestiona mediante un servicio de autenticación que determina si el usuario ha iniciado sesión correctamente. En función de esto, se muestran o se ocultan ciertos elementos de la interfaz.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Componentes afectados**: `<app-header>`, `<app-product-actions>`, y ciertas columnas en la tabla de productos.
+- **Condición de autenticación**: Si el usuario está autenticado, se le permitirá agregar, editar y eliminar productos, así como acceder a otras acciones disponibles.
 
-## Build
+## 2. **Búsqueda de Productos**
+Se ha implementado un componente de barra de búsqueda (`<app-search-bar>`) que permite al usuario buscar productos en la lista. Al escribir en la barra de búsqueda, la lista de productos se filtra automáticamente para mostrar solo los productos cuyo nombre coincida con el texto introducido.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- **Funcionalidad**: El componente de búsqueda emite el término de búsqueda, que es gestionado por el componente padre, actualizando la lista de productos visibles.
+- **Pipe personalizado**: Se utiliza un pipe personalizado llamado `buscador` para filtrar los productos en la tabla según el término de búsqueda.
 
-## Running unit tests
+## 3. **Carga de Productos**
+La lista de productos es cargada de manera dinámica desde un servicio. Mientras los productos se están cargando, se muestra un componente visual (`<app-loading-image>`) indicando que los datos están siendo procesados.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Estado de carga**: Si no hay productos disponibles, se muestra una advertencia de carga; si los productos están listos, se presenta la tabla con los datos correspondientes.
 
-## Running end-to-end tests
+## 4. **Conteo de Productos**
+El componente `<app-product-count-button>` muestra un botón que indica el número total de productos cargados en la lista. Este número se actualiza dinámicamente cada vez que se cargan nuevos productos o se eliminan productos existentes.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+- **Datos dinámicos**: El componente recibe el número total de productos como un `@Input()` desde su componente padre.
 
-## Further help
+## 5. **Tabla de Productos**
+La tabla principal muestra una lista de productos con columnas para el nombre, el precio de costo, el porcentaje de ganancia y el precio final. Si el usuario está autenticado, también verá opciones adicionales para editar o eliminar productos.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- **Columnas dinámicas**: Algunas columnas (como precio de costo y porcentaje de ganancia) solo se muestran si el usuario ha iniciado sesión.
+- **Acciones**: Los botones de "Editar" y "Eliminar" permiten al usuario modificar o eliminar un producto de la lista.
+
+## 6. **Eliminar Productos**
+El usuario puede eliminar productos de la lista mediante un botón de eliminación. Al hacer clic en este botón, se llama a un servicio que se encarga de eliminar el producto correspondiente del estado de la aplicación.

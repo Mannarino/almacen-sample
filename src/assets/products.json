@@ -1,0 +1,142 @@
+[
+  {
+    "_id": "1",
+    "nombre": "Arroz",
+    "porcentajeGanancia": 20,
+    "precioCosto": 30,
+    "precioFinal": 36
+  },
+  {
+    "_id": "2",
+    "nombre": "Azúcar",
+    "porcentajeGanancia": 15,
+    "precioCosto": 25,
+    "precioFinal": 28.75
+  },
+  {
+    "_id": "3",
+    "nombre": "Harina de trigo",
+    "porcentajeGanancia": 18,
+    "precioCosto": 40,
+    "precioFinal": 47.2
+  },
+  {
+    "_id": "4",
+    "nombre": "Leche en polvo",
+    "porcentajeGanancia": 25,
+    "precioCosto": 120,
+    "precioFinal": 150
+  },
+  {
+    "_id": "5",
+    "nombre": "Aceite de girasol",
+    "porcentajeGanancia": 22,
+    "precioCosto": 80,
+    "precioFinal": 97.6
+  },
+  {
+    "_id": "6",
+    "nombre": "Café",
+    "porcentajeGanancia": 30,
+    "precioCosto": 150,
+    "precioFinal": 195
+  },
+  {
+    "_id": "7",
+    "nombre": "Fideos",
+    "porcentajeGanancia": 16,
+    "precioCosto": 35,
+    "precioFinal": 40.6
+  },
+  {
+    "_id": "8",
+    "nombre": "Galletas",
+    "porcentajeGanancia": 20,
+    "precioCosto": 50,
+    "precioFinal": 60
+  },
+  {
+    "_id": "9",
+    "nombre": "Pan de molde",
+    "porcentajeGanancia": 15,
+    "precioCosto": 55,
+    "precioFinal": 63.25
+  },
+  {
+    "_id": "10",
+    "nombre": "Yogur natural",
+    "porcentajeGanancia": 20,
+    "precioCosto": 90,
+    "precioFinal": 108
+  },
+  {
+    "_id": "11",
+    "nombre": "Manteca",
+    "porcentajeGanancia": 18,
+    "precioCosto": 45,
+    "precioFinal": 53.1
+  },
+  {
+    "_id": "12",
+    "nombre": "Huevos",
+    "porcentajeGanancia": 12,
+    "precioCosto": 60,
+    "precioFinal": 67.2
+  },
+  {
+    "_id": "13",
+    "nombre": "Queso",
+    "porcentajeGanancia": 28,
+    "precioCosto": 160,
+    "precioFinal": 204.8
+  },
+  {
+    "_id": "14",
+    "nombre": "Jamón cocido",
+    "porcentajeGanancia": 25,
+    "precioCosto": 130,
+    "precioFinal": 162.5
+  },
+  {
+    "_id": "15",
+    "nombre": "Pollo entero",
+    "porcentajeGanancia": 20,
+    "precioCosto": 200,
+    "precioFinal": 240
+  },
+  {
+    "_id": "16",
+    "nombre": "Papel higiénico",
+    "porcentajeGanancia": 15,
+    "precioCosto": 90,
+    "precioFinal": 103.5
+  },
+  {
+    "_id": "17",
+    "nombre": "Shampoo",
+    "porcentajeGanancia": 25,
+    "precioCosto": 180,
+    "precioFinal": 225
+  },
+  {
+    "_id": "18",
+    "nombre": "Jabón en barra",
+    "porcentajeGanancia": 18,
+    "precioCosto": 25,
+    "precioFinal": 29.5
+  },
+  {
+    "_id": "19",
+    "nombre": "Lavandina",
+    "porcentajeGanancia": 20,
+    "precioCosto": 70,
+    "precioFinal": 84
+  },
+  {
+    "_id": "20",
+    "nombre": "Detergente",
+    "porcentajeGanancia": 22,
+    "precioCosto": 60,
+    "precioFinal": 29.5
+  }
+]

@@ -12,7 +12,11 @@ import { EditarProductoComponent } from './editar-producto/editar-producto.compo
 import { ProductoFaltanteComponent } from './producto-faltante/producto-faltante.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { HeaderComponent } from './home/header/header.component';
+import { HeaderComponent } from './home/components/header/header.component';
+import { LoadingImageComponent } from './home/components/loading-image/loading-image.component';
+import { ProductActionsComponent } from './home/components/product-actions/product-actions.component';
+import { ProductCountButtonComponent } from './home/components/product-count-button/product-count-button.component';
+import { SearchBarComponent } from './home/components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { HeaderComponent } from './home/header/header.component';
     AgregarProductoComponent,
     EditarProductoComponent,
     ProductoFaltanteComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoadingImageComponent,
+    ProductActionsComponent,
+    ProductCountButtonComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
