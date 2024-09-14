@@ -1,78 +1,88 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import { AlertifyMessagesService } from './alertify-messages.service';
 import { Producto } from '../interfaces/producto';
+import { LocalStorageService } from './local-storage.service';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class StateManagetService {
+  
+  private localStorageKey = 'productos'; // Clave para localStorage
   private listaSubject: BehaviorSubject<Producto[]> = new BehaviorSubject<Producto[]>([]);
   public lista$: Observable<Producto[]> = this.listaSubject.asObservable();
 
-  constructor(private http: HttpClient,
-    private alertifyMesaggesService:AlertifyMessagesService) { }
-    
-    getAllProducts() {
-      this.http.get<Producto[]>('/assets/products.json')
-        .subscribe((value: Producto[]) => {
-          const listaInvertida = [...value].reverse();
-          this.listaSubject.next(listaInvertida);
-        },
-        error => {
-          this.alertifyMesaggesService.errorServer();
-        });
-    }
-    
-  getProductById(id: string): Observable<Producto | undefined> {
-    return this.http.get<Producto[]>('/assets/products.json').pipe(
-      map((productos: Producto[]) => productos.find(producto => producto._id === id)),
-      catchError(error => {
-        this.alertifyMesaggesService.errorServer();
-        return throwError(error);
-      })
-    );
+  constructor(
+    private localStorageService: LocalStorageService,
+    private http: HttpClient,
+    private alertifyMesaggesService: AlertifyMessagesService
+  ) {
+    this.loadInitialData(); // Cargar datos iniciales al iniciar el servicio
   }
+
   
-  getList(nuevaLista: Producto[]): void {
-    this.listaSubject.next(nuevaLista);
+   // Cargar productos desde localStorage al iniciar la app
+   private loadInitialData() {
+    setTimeout(() => {
+      const productos = this.localStorageService.getProducts();
+      if (productos.length === 0) {
+        this.getAllProductsFromJson();
+      } else {
+        this.listaSubject.next(productos);
+      }
+    }, 2000);
+    
   }
+
+  private getAllProductsFromJson() {
+    // Aquí puedes cargar los productos desde el JSON solo la primera vez
+    this.http.get<Producto[]>('/assets/products.json')
+      .subscribe((value: Producto[]) => {
+        const listaInvertida = [...value].reverse();
+        this.localStorageService.saveProducts(listaInvertida); // Guardar en localStorage
+        this.listaSubject.next(listaInvertida); // Emitir la lista
+      }, error => {
+        this.alertifyMesaggesService.errorServer();
+      });
+  }
+
+    // Obtener producto por ID y devolver un Observable
+  getProductById(id: string): Observable<Producto | undefined> {
+      return this.lista$.pipe(
+        map((productList: Producto[]) => productList.find(producto => producto._id === id)) // Encontrar el producto por ID
+      );
+    }
 
   addElement(elemento: Producto): void {
     this.alertifyMesaggesService.addItemMessage();
     const listaActual = this.listaSubject.getValue();
-    const nuevaLista = [elemento, ...listaActual]; // Agregar el nuevo elemento al principio
-    this.listaSubject.next(nuevaLista);
+    const nuevaLista = [elemento, ...listaActual];
+    this.localStorageService.saveProducts(nuevaLista); // Actualizar localStorage
+    this.listaSubject.next(nuevaLista); // Emitir la lista actualizada
   }
 
   deleteElement(id: string): void {
-    this.alertifyMesaggesService.deleteItemMessage()
+    this.alertifyMesaggesService.deleteItemMessage();
     const listaActual = this.listaSubject.getValue();
-    const indice = listaActual.findIndex(producto => producto._id === id);
-    if (indice !== -1) {
-      const nuevaLista = listaActual.filter(producto => producto._id !== id);
-      this.listaSubject.next(nuevaLista);
-    } else {
-      console.error('Elemento no encontrado en la lista');
-    }
+    const nuevaLista = listaActual.filter(producto => producto._id !== id);
+    this.localStorageService.saveProducts(nuevaLista); // Actualizar localStorage
+    this.listaSubject.next(nuevaLista); // Emitir la lista actualizada
   }
-  
- 
+
   editElement(id: string, nuevoProducto: Producto): void {
-    this.alertifyMesaggesService.updateItemMessage()
+    this.alertifyMesaggesService.updateItemMessage();
     const listaActual = this.listaSubject.getValue();
-  
     const indice = listaActual.findIndex(producto => producto._id === id);
-    
-    
+
     if (indice !== -1) {
-      const listaActualizada = [...listaActual]; // Crear una nueva lista para no mutar la original
-      listaActualizada[indice] = { ...listaActualizada[indice], ...nuevoProducto }; // Actualizar el producto
-      this.listaSubject.next(listaActualizada);
-    } else {
-      console.error('Elemento no encontrado en la lista');
+      const listaActualizada = [...listaActual];
+      listaActualizada[indice] = { ...listaActualizada[indice], ...nuevoProducto };
+      this.localStorageService.saveProducts(listaActualizada); // Actualizar localStorage
+      this.listaSubject.next(listaActualizada); // Emitir la lista actualizada
     }
   }
-  
 }
+  
+

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { StateManagetService } from './core/services/state-managet.service';
+
 
 
 
@@ -12,10 +12,11 @@ import { StateManagetService } from './core/services/state-managet.service';
 export class AppComponent {
   title = 'frontend';
   
-  constructor(private managetStateService:StateManagetService)
+  constructor()
                { }
   ngOnInit(): void {
-    this.managetStateService.getAllProducts()
+    
+    
     
   }
   

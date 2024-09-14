@@ -12,9 +12,14 @@ import { WatchAndSetService } from '../core/services/watch-and-set.service';
 })
 export class EditarProductoComponent implements OnInit {
   
+  // Propiedad para almacenar el parámetro de la ruta (ID del producto)
   parametro
   
-  form: FormGroup
+  // Definición del formulario que manejará los datos del producto
+  form: FormGroup;
+
+  // Método que inicializa el formulario con los campos necesarios
+  // Cada campo tiene un FormControl que gestiona su valor y estado
   private buildForm() {
     this.form = new FormGroup({
       _id : new FormControl(''),
@@ -28,8 +33,12 @@ export class EditarProductoComponent implements OnInit {
   constructor(private managetStateSevice:StateManagetService,
   	          private route: ActivatedRoute,
               private watchAndSetService:WatchAndSetService
-  	         ) 
-             { this.buildForm()}
+  	         ) //se inyectan los servicios necesarios:
+             // - StateManagetService: para manejar el estado del producto (obtener y editar).
+             // - ActivatedRoute: para obtener los parámetros de la URL (en este caso, el ID del producto).
+             // - WatchAndSetService: para observar los cambios en los campos y recalcular el precio final automáticamente.
+             { this.buildForm()// Se inicializa el formulario al crear la instancia del componente.
+            }
 
   ngOnInit(): void {
     this.watchAndSetService.watchAndSetFinalPriceInputControl(this.form)

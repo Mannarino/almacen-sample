@@ -1,61 +1,65 @@
-# Frontend
+# Aplicación de Gestión de Productos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.
+Esta es una aplicación desarrollada en **Angular** para la gestión de productos, con un backend simulado que utiliza un archivo JSON estático para la autenticación y la gestión de datos. La aplicación permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre una lista de productos, con el almacenamiento persistente en `localStorage` para que los datos se conserven entre sesiones.
+
+## Características Principales
+
+- **Gestión de Productos**: Se pueden agregar, editar, eliminar y ver productos.
+- **Cálculo Automático de Precios**: Utiliza el servicio `WatchAndSetService` para observar y calcular automáticamente el precio final en función del costo y el porcentaje de ganancia.
+- **Persistencia en LocalStorage**: Los productos se almacenan en `localStorage` para que persistan entre sesiones del navegador.
+- **Uso de Observables**: El estado de la lista de productos se gestiona a través de `BehaviorSubject` para reflejar cambios en tiempo real en la interfaz.
+- **Autenticación Simulada**: Utiliza un archivo JSON estático para simular el inicio de sesión y generar un token.
+- **Manejo de Sesiones**: El usuario y la contraseña pueden guardarse en `localStorage` si el usuario selecciona la opción "Remember me".
+- **Interfaz Reactiva con Formularios**: La aplicación emplea formularios reactivos para la creación y edición de productos.
+- **Pipe Personalizado para el Buscador**: Permite filtrar los productos en función del texto ingresado por el usuario en tiempo real.
+
+## Tecnologías Utilizadas
+
+- **Frontend**: Angular 11
+  - `Reactive Forms`: Para la gestión de formularios.
+  - `Observables` y `BehaviorSubject`: Para la gestión reactiva del estado.
+  - `LocalStorage`: Para la persistencia de datos entre sesiones.
+  - `HttpClientModule`: Para simulaciones de peticiones HTTP y conexión con un backend estático.
+  - **Pipe Personalizado**: Para filtrar productos en el buscador.
+- **Backend Simulado**: JSON estático que simula la base de datos de productos y autenticación.
+- **AlertifyJS**: Para mostrar notificaciones de éxito o error al realizar operaciones CRUD.
 
 
-# Funcionalidades Implementadas
 
-## 1. **Autenticación de Usuario**
-La aplicación permite verificar si un usuario está autenticado o no. La autenticación se gestiona mediante un servicio de autenticación que determina si el usuario ha iniciado sesión correctamente. En función de esto, se muestran o se ocultan ciertos elementos de la interfaz.
+## Funcionalidades
 
-- **Componentes afectados**: `<app-header>`, `<app-product-actions>`, y ciertas columnas en la tabla de productos.
-- **Condición de autenticación**: Si el usuario está autenticado, se le permitirá agregar, editar y eliminar productos, así como acceder a otras acciones disponibles.
+### 1. **Gestión de Productos**
 
-## 2. **Búsqueda de Productos**
-Se ha implementado un componente de barra de búsqueda (`<app-search-bar>`) que permite al usuario buscar productos en la lista. Al escribir en la barra de búsqueda, la lista de productos se filtra automáticamente para mostrar solo los productos cuyo nombre coincida con el texto introducido.
+La aplicación carga la lista de productos desde `localStorage` (si existe) al iniciar. Si no hay datos en `localStorage`, se obtiene la lista de un archivo estático `products.json`. Las operaciones CRUD se realizan en tiempo real, y los cambios en la lista se reflejan automáticamente en la interfaz gracias al uso de `BehaviorSubject` y `Observables`.
 
-- **Funcionalidad**: El componente de búsqueda emite el término de búsqueda, que es gestionado por el componente padre, actualizando la lista de productos visibles.
-- **Pipe personalizado**: Se utiliza un pipe personalizado llamado `buscador` para filtrar los productos en la tabla según el término de búsqueda.
+- **Cargar Productos**: Cuando se inicia la aplicación, la lista de productos se carga desde `localStorage`. Si no hay datos, se obtiene de `products.json`.
+- **Agregar Producto**: Se agrega un nuevo producto a la lista y se guarda tanto en `localStorage` como en el estado de la aplicación.
+- **Editar Producto**: Al editar un producto, los cambios se actualizan en tiempo real en el estado de la aplicación y en `localStorage`.
+- **Eliminar Producto**: Al eliminar un producto, se elimina de la lista en memoria y se actualiza en `localStorage`.
 
-## 3. **Carga de Productos**
-La lista de productos es cargada de manera dinámica desde un servicio. Mientras los productos se están cargando, se muestra un componente visual (`<app-loading-image>`) indicando que los datos están siendo procesados.
+### 2. **Cálculo Automático del Precio Final**
 
-- **Estado de carga**: Si no hay productos disponibles, se muestra una advertencia de carga; si los productos están listos, se presenta la tabla con los datos correspondientes.
+El servicio `WatchAndSetService` se encarga de observar los cambios en los campos `precioCosto` y `porcentajeGanancia` de un formulario reactivo. Cada vez que uno de estos campos cambia, el servicio recalcula automáticamente el `precioFinal`.
 
-## 4. **Conteo de Productos**
-El componente `<app-product-count-button>` muestra un botón que indica el número total de productos cargados en la lista. Este número se actualiza dinámicamente cada vez que se cargan nuevos productos o se eliminan productos existentes.
+### 3. **Autenticación Simulada con JSON**
 
-- **Datos dinámicos**: El componente recibe el número total de productos como un `@Input()` desde su componente padre.
+El servicio `AuthService` se encarga de gestionar la autenticación simulada utilizando un archivo JSON estático. La autenticación se realiza comparando el nombre de usuario y contraseña con los datos en el archivo JSON, y si coinciden, se guarda un token en `localStorage`.
 
-## 5. **Tabla de Productos**
-La tabla principal muestra una lista de productos con columnas para el nombre, el precio de costo, el porcentaje de ganancia y el precio final. Si el usuario está autenticado, también verá opciones adicionales para editar o eliminar productos.
+### 4. **Interacción con LocalStorage**
 
-- **Columnas dinámicas**: Algunas columnas (como precio de costo y porcentaje de ganancia) solo se muestran si el usuario ha iniciado sesión.
-- **Acciones**: Los botones de "Editar" y "Eliminar" permiten al usuario modificar o eliminar un producto de la lista.
+La aplicación guarda la lista de productos en `localStorage`, por lo que la próxima vez que el usuario vuelva a abrir la aplicación, esta recuperará los productos guardados y continuará desde donde se dejó. Los cambios realizados en los productos se reflejan en tiempo real, pero `localStorage` solo se actualiza después de que se agregue, edite o elimine un producto.
 
-## 6. **Eliminar Productos**
-El usuario puede eliminar productos de la lista mediante un botón de eliminación. Al hacer clic en este botón, se llama a un servicio que se encarga de eliminar el producto correspondiente del estado de la aplicación.
+### 5. **Estado Reactivo con BehaviorSubject**
 
-## Cálculo automático del Precio Final basado en el Costo y el Porcentaje de Ganancia
+Se utiliza un `BehaviorSubject` para mantener el estado de la lista de productos. Esto permite que cualquier componente que se suscriba a este estado pueda recibir actualizaciones en tiempo real cuando los productos cambian. Todos los métodos que realizan operaciones sobre la lista emiten los cambios a través de este observable.
 
-En la aplicación, los usuarios pueden ingresar el **precio de costo** de un producto y el **porcentaje de ganancia** esperado. Con estos datos, el sistema calcula automáticamente el **precio final** utilizando una fórmula que aplica el porcentaje de ganancia sobre el costo del producto.
+### 6. **Pipe Personalizado para el Buscador**
 
-Esta funcionalidad es manejada por el servicio `WatchAndSetService`, que se encuentra en `src/app/core/services/watch-and-set.service.ts`. A continuación, se describe su funcionamiento:
+La aplicación cuenta con un pipe personalizado para filtrar productos en el buscador. A medida que el usuario ingresa texto en el campo de búsqueda, este pipe filtra los productos en tiempo real según el nombre del producto o cualquier otra propiedad relevante.
 
-#### Descripción del Servicio
+- **Filtrado en Tiempo Real**: Permite filtrar productos de manera dinámica mientras el usuario escribe en el campo de búsqueda.
+- **Pipe Reutilizable**: Este pipe se puede utilizar en varias partes de la aplicación donde se requiera filtrar productos o cualquier otro tipo de lista.
 
-El servicio `WatchAndSetService` es responsable de observar los cambios en dos campos del formulario:
-1. **`precioCosto`**: El costo base del producto.
-2. **`porcentajeGanancia`**: El porcentaje de ganancia que el usuario desea aplicar.
 
-Cada vez que uno de estos campos cambia, el servicio:
-- Calcula automáticamente el nuevo valor del campo **`precioFinal`**.
-- El cálculo se realiza mediante una fórmula simple que agrega el porcentaje de ganancia al precio de costo:  
-  **`precioFinal = precioCosto * (1 + porcentajeGanancia / 100)`**.
 
-Este servicio se utiliza en los componentes de **agregar** y **editar** productos, permitiendo que el precio final se actualice en tiempo real a medida que el usuario modifica los valores de costo y ganancia.
 
-#### Beneficios
-
-- **Actualización en tiempo real**: El campo `precioFinal` se actualiza automáticamente cuando se cambian los valores de `precioCosto` o `porcentajeGanancia`, brindando una experiencia interactiva y sin necesidad de cálculos manuales por parte del usuario.
-- **Reutilizable**: Este servicio se puede utilizar en cualquier formulario que necesite calcular un precio basado en un costo y un porcentaje de ganancia, haciéndolo flexible para diferentes escenarios dentro de la aplicación.

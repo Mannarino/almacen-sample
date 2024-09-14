@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl , FormGroup } from '@angular/forms'
-import {ProductosFaltantesService} from './../services/productos-faltantes.service'
+import {ProductosFaltantesService} from './productos-faltantes.service'
 
 
 @Component({
